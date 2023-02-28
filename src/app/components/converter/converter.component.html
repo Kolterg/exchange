@@ -1,0 +1,17 @@
+<br/>
+<div>
+    <div class="dropdown">
+        <button class="dropbtn">{{firstTarget ? firstTarget.cc : "UAH"}}</button>
+        <div class="dropdown-content">
+            <app-dropdown *ngFor="let singleExchangeRate of exchangeRates" [exchangeRate]="singleExchangeRate" (voted)="onTarget1($event)"></app-dropdown>
+        </div>
+    </div>
+        <input type="number" (blur)="convert(0)" [(ngModel)]="firstNum"/>
+        <input type="number" (blur)="convert(1)" [(ngModel)]="secondNum"/>
+    <div class="dropdown">
+        <button class="dropbtn">{{secondTarget ? secondTarget.cc : "USD"}}</button>
+        <div class="dropdown-content">
+            <app-dropdown *ngFor="let singleExchangeRate of exchangeRates" [exchangeRate]="singleExchangeRate" (voted)="onTarget2($event)"></app-dropdown>
+        </div>
+    </div>
+</div><br />
