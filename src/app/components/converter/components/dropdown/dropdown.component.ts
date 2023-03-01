@@ -18,7 +18,6 @@ export class DropdownComponent {
 
   getTarget() {
     this.voted.emit(this.exchangeRate);
-    this.target = this.exchangeRate;
   }
 
 }

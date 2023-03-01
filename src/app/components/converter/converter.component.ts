@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import ExchangeRate from 'src/app/models/Exchange';
-import { NgForm, NgModel } from '@angular/forms';
+import { ExchangeService } from 'src/app/services/exchange.service';
 
 @Component({
   selector: 'app-converter',
@@ -8,37 +8,24 @@ import { NgForm, NgModel } from '@angular/forms';
   styleUrls: ['./converter.component.scss']
 })
 export class ConverterComponent implements OnInit {
+  exchangeRates: ExchangeRate[];
 
-  @Input()
-  get exchangeRates(): ExchangeRate[] {
-    return this._exchangeRates
-  }
-  set exchangeRates(exchangeRates: ExchangeRate[]) {
-    this._exchangeRates = exchangeRates;
-  }
-  private _exchangeRates: ExchangeRate[];
-
-  firstTarget: ExchangeRate = {
-    "r030": 0,
-    "txt": "Гривня",
-    "rate": 1,
-    "cc": "UAH",
-    "exchangedate": ""
-  };
-  secondTarget: ExchangeRate = {
-    "r030": 0,
-    "txt": "Долар США",
-    "rate": 38,
-    "cc": "USD",
-    "exchangedate": ""
-  };
+  firstTarget: ExchangeRate;
+  secondTarget: ExchangeRate;
 
   firstNum: number;
   secondNum: number;
 
-  constructor() { }
+  constructor(private exchangeService: ExchangeService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.exchangeService.getExchangeRate().subscribe(value => {
+      this.exchangeRates = value;
+      this.firstTarget = value[0];
+      this.secondTarget = value[1];
+    });
+    
+  }
 
   onTarget1(target: ExchangeRate): void {
     this.firstTarget = target;
@@ -47,13 +34,13 @@ export class ConverterComponent implements OnInit {
     this.secondTarget = target;
   }
 
-  convert(num: number) {
-    switch (num) {
-      case 0:
+  convert(input: string) {
+    switch (input) {
+      case "firstNum":
         this.secondNum = this.firstTarget.rate / this.secondTarget.rate * this.firstNum;
         break;
 
-      case 1:
+      case "secondNum":
         this.firstNum = this.secondTarget.rate / this.firstTarget.rate * this.secondNum;
         break;
 

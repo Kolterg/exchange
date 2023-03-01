@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import ExchangeRate from 'src/app/models/Exchange';
+import { ExchangeService } from 'src/app/services/exchange.service';
 
 @Component({
   selector: 'app-header',
@@ -7,13 +8,18 @@ import ExchangeRate from 'src/app/models/Exchange';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  @Input()
-  exchangeRateEUR: ExchangeRate;
-  @Input()
   exchangeRateUSD: ExchangeRate;
+  exchangeRateEUR: ExchangeRate;
 
-  constructor() {}
+  constructor(private exchangeService: ExchangeService) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.exchangeService.getExchangeRateByCC("USD").subscribe(value => {
+      this.exchangeRateUSD = value[0];
+    })
+
+    this.exchangeService.getExchangeRateByCC("EUR").subscribe(value => {
+      this.exchangeRateEUR = value[0];
+    })
+  }
 }

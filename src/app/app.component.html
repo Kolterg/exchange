@@ -1,3 +1,4 @@
-<app-header [exchangeRateUSD]="exchangeRateUSD" [exchangeRateEUR]="exchangeRateEUR"></app-header>
-<app-converter [exchangeRates]="exchangeRates"></app-converter>
+<app-header></app-header>
+<app-converter></app-converter>
 <app-exchange *ngFor="let e of exchangeRates" [exchangeRate]="e"></app-exchange>
+<br/>
