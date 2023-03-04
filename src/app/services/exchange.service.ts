@@ -10,8 +10,11 @@ export class ExchangeService {
   private url = 'https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json';
 
   exchangeRateUSD: ExchangeRate[];
+  USDIndex: number;
   exchangeRateEUR: ExchangeRate[];
+  EURIndex: number;
   exchangeRatePLN: ExchangeRate[];
+  PLNIndex: number;
   private exchangeRateUAH: ExchangeRate = {
     "r030": 0,
     "txt": "Гривня",
@@ -24,11 +27,14 @@ export class ExchangeService {
 
   getExchangeRate(): Observable<ExchangeRate[]> {
     return this.httpClient.get<ExchangeRate[]>(this.url).pipe(map(exchangeRates => {
-      this.exchangeRatePLN = exchangeRates.splice(32, 1);
+      this.PLNIndex = exchangeRates.findIndex(el => el.cc === "PLN");
+      this.exchangeRatePLN = exchangeRates.splice(this.PLNIndex, 1);
       exchangeRates.unshift(this.exchangeRatePLN[0]);
-      this.exchangeRateEUR = exchangeRates.splice(32, 1);
+      this.EURIndex = exchangeRates.findIndex(el => el.cc === "EUR");
+      this.exchangeRateEUR = exchangeRates.splice(this.EURIndex, 1);
       exchangeRates.unshift(this.exchangeRateEUR[0]);
-      this.exchangeRateUSD = exchangeRates.splice(26, 1);
+      this.USDIndex = exchangeRates.findIndex(el => el.cc === "USD");
+      this.exchangeRateUSD = exchangeRates.splice(this.USDIndex, 1);
       exchangeRates.unshift(this.exchangeRateUSD[0]);
       exchangeRates.unshift(this.exchangeRateUAH);
       return exchangeRates;

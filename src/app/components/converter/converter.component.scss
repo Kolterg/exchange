@@ -2,6 +2,17 @@ input {
     margin: 5px;
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// .box {
+//     display: flex;
+//     flex-direction: row;
+// }
+
 /* Dropdown Button */
 .dropbtn {
     background-color: #898989;
